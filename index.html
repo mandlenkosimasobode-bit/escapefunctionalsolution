@@ -253,48 +253,90 @@
             }
         }
 
-        /* ENSURE SERVICES SECTION IS VISIBLE */
+        /* FIXED SERVICES SECTION - FORCED VISIBLE */
         #services {
             position: relative;
-            z-index: 10;
-            background: rgba(5, 5, 5, 0.95);
+            z-index: 50 !important;
+            background: #0a0a0a !important;
             min-height: 600px;
+            display: block !important;
+            padding: 8rem 0 !important;
+            margin: 0 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .service-grid {
             position: relative;
-            z-index: 20;
+            z-index: 100 !important;
+            display: grid !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .service-card {
             position: relative;
-            z-index: 25;
+            z-index: 200 !important;
             min-height: 320px;
-            display: flex;
+            display: flex !important;
             flex-direction: column;
+            background: #111 !important;
+            border: 1px solid #00ff8844 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            color: white !important;
         }
 
-            /* Ensure text is visible */
-            .service-card ul li {
-                color: #d1d5db;
-            }
+        .service-card ul li {
+            color: #d1d5db !important;
+            visibility: visible !important;
+        }
 
-            .service-card h3 {
-                color: white;
-            }
+        .service-card h3 {
+            color: white !important;
+            visibility: visible !important;
+        }
+
+        .service-card svg {
+            color: #00ff88 !important;
+        }
 
         /* Fix for any potential overlay issues */
         .fixed.inset-0 {
             z-index: 0;
         }
 
-        /* Logo container for proper sizing without affecting header height */
-        .logo-container {
-            display: flex;
-            align-items: center;
-            height: 100%;
-            margin-top: -20px; /* Pull logo up to overlap */
-            margin-bottom: -20px; /* Pull logo down to overlap */
+        /* Floating Logo - positioned outside header */
+        .floating-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            cursor: pointer;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.5));
+            transition: transform 0.3s ease;
+            width: auto;
+            height: 48px; /* Original size restored */
+        }
+
+        .floating-logo:hover {
+            transform: scale(1.1);
+        }
+
+        /* Adjust header to accommodate floating logo */
+        .header-content {
+            margin-left: 70px; /* Space for floating logo */
+        }
+
+        @media (max-width: 768px) {
+            .floating-logo {
+                height: 40px;
+                top: 15px;
+                left: 15px;
+            }
+            .header-content {
+                margin-left: 60px;
+            }
         }
     </style>
 </head>
@@ -309,16 +351,18 @@
     <!-- Robot Background Image - MOVED 1CM DOWN FROM MENU -->
     <img src="Transperent 3D.png" alt="EFS Robot" class="robot-bg floating hidden lg:block" style="opacity: 0.1; top: calc(50% + 0.5cm);">
 
+    <!-- Floating Logo - positioned outside header, original size restored -->
+    <a href="#home">
+        <img src="Transparent.png" alt="EFS Logo" class="floating-logo">
+    </a>
+
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md border-b border-green-500/30"></div>
         <div class="container mx-auto px-6 py-4 relative z-10">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3 logo-container">
-                    <!-- Logo enlarged to 5cm (189px) and made into a clickable home button -->
-                    <a href="#home">
-                        <img src="Transparent.png" alt="EFS Logo" class="w-auto" style="height: 189px;">
-                    </a>
+            <div class="flex justify-between items-center header-content">
+                <div class="flex items-center space-x-3">
+                    <!-- Logo removed from here - now floating separately -->
                     <div class="hidden md:block">
                         <h1 class="font-orbitron text-2xl font-bold text-white tracking-wider">EFS</h1>
                         <p class="text-xs text-green-400 tracking-[0.3em] uppercase">Escape Functional Solutions</p>
@@ -401,13 +445,13 @@
         <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050505] to-transparent z-20"></div>
     </section>
 
-    <!-- Services Section - COMPLETELY FIXED -->
-    <section id="services" class="relative py-32" style="background: #0a0a0a; z-index: 10;">
-        <!-- Simple dark background instead of overlays -->
+    <!-- Services Section - COMPLETELY FIXED WITH FORCED VISIBILITY -->
+    <section id="services">
+        <!-- Simple dark background -->
         <div class="absolute inset-0 bg-[#0a0a0a] z-0"></div>
         <div class="absolute inset-0 circuit-pattern opacity-20 z-0"></div>
 
-        <div class="container mx-auto px-6 relative z-20">
+        <div class="container mx-auto px-6 relative" style="z-index: 200; position: relative;">
             <div class="text-center mb-16" id="servicesHeader">
                 <h2 class="font-orbitron text-4xl md:text-5xl font-bold text-white mb-4">
                     SERVICE <span class="text-green-400">MODULES</span>
@@ -416,9 +460,9 @@
                 <p class="mt-6 text-gray-300 max-w-2xl mx-auto text-lg">Comprehensive technological solutions tailored for modern enterprises and individuals</p>
             </div>
 
-            <div class="service-grid grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" style="display: grid !important; visibility: visible !important; opacity: 1 !important;">
                 <!-- Hardware & Networking -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844; display: block !important;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
@@ -450,7 +494,7 @@
                 </div>
 
                 <!-- Office Solutions -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844; display: block !important;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -482,7 +526,7 @@
                 </div>
 
                 <!-- Neighborhood Solutions -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844; display: block !important;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -514,7 +558,7 @@
                 </div>
 
                 <!-- Power Backup -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844; display: block !important;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -681,7 +725,8 @@
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-3 mb-4 md:mb-0">
-                    <img src="Transparent.png" alt="EFS" class="h-10 w-auto opacity-80">
+                    <!-- Footer logo increased to 3cm (approx 113px) -->
+                    <img src="Transparent.png" alt="EFS" style="height: 113px; width: auto;" class="opacity-80">
                     <div>
                         <h3 class="font-orbitron text-lg font-bold text-white">EFS</h3>
                         <p class="text-xs text-gray-600">Escape Functional Solutions © 2026</p>
