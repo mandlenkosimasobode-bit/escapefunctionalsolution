@@ -287,6 +287,15 @@
         .fixed.inset-0 {
             z-index: 0;
         }
+
+        /* Logo container for proper sizing without affecting header height */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            margin-top: -20px; /* Pull logo up to overlap */
+            margin-bottom: -20px; /* Pull logo down to overlap */
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -297,16 +306,19 @@
     <!-- Animated Grid Background -->
     <div class="fixed inset-0 cyber-grid opacity-30 pointer-events-none z-0"></div>
 
-    <!-- Robot Background Image - REDUCED OPACITY FURTHER -->
-    <img src="Transperent 3D.png" alt="EFS Robot" class="robot-bg floating hidden lg:block" style="opacity: 0.1;">
+    <!-- Robot Background Image - MOVED 1CM DOWN FROM MENU -->
+    <img src="Transperent 3D.png" alt="EFS Robot" class="robot-bg floating hidden lg:block" style="opacity: 0.1; top: calc(50% + 0.5cm);">
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-md border-b border-green-500/30"></div>
         <div class="container mx-auto px-6 py-4 relative z-10">
             <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <img src="Transparent.png" alt="EFS Logo" class="h-12 w-auto">
+                <div class="flex items-center space-x-3 logo-container">
+                    <!-- Logo enlarged to 5cm (189px) and made into a clickable home button -->
+                    <a href="#home">
+                        <img src="Transparent.png" alt="EFS Logo" class="w-auto" style="height: 189px;">
+                    </a>
                     <div class="hidden md:block">
                         <h1 class="font-orbitron text-2xl font-bold text-white tracking-wider">EFS</h1>
                         <p class="text-xs text-green-400 tracking-[0.3em] uppercase">Escape Functional Solutions</p>
