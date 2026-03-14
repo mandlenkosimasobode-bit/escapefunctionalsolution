@@ -138,19 +138,19 @@
 
         /* Glassmorphism Cards - ENHANCED VISIBILITY */
         .glass-card {
-            background: rgba(10, 10, 10, 0.85);
+            background: rgba(15, 15, 15, 0.95);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.4);
             transition: all 0.3s ease;
             position: relative;
-            z-index: 10;
+            z-index: 20;
         }
 
             .glass-card:hover {
                 border-color: rgba(0, 255, 136, 0.8);
                 box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
                 transform: translateY(-5px);
-                background: rgba(10, 10, 10, 0.95);
+                background: rgba(20, 20, 20, 0.98);
             }
 
         /* Scanline Effect */
@@ -189,7 +189,7 @@
             transform: translateY(-50%);
             width: 55%;
             height: auto;
-            opacity: 0.25;
+            opacity: 0.15;
             z-index: 1;
             pointer-events: none;
             filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.2));
@@ -256,13 +256,36 @@
         /* ENSURE SERVICES SECTION IS VISIBLE */
         #services {
             position: relative;
-            z-index: 5;
-            background: rgba(5, 5, 5, 0.8);
+            z-index: 10;
+            background: rgba(5, 5, 5, 0.95);
+            min-height: 600px;
         }
 
         .service-grid {
             position: relative;
-            z-index: 10;
+            z-index: 20;
+        }
+
+        .service-card {
+            position: relative;
+            z-index: 25;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+
+            /* Ensure text is visible */
+            .service-card ul li {
+                color: #d1d5db;
+            }
+
+            .service-card h3 {
+                color: white;
+            }
+
+        /* Fix for any potential overlay issues */
+        .fixed.inset-0 {
+            z-index: 0;
         }
     </style>
 </head>
@@ -274,8 +297,8 @@
     <!-- Animated Grid Background -->
     <div class="fixed inset-0 cyber-grid opacity-30 pointer-events-none z-0"></div>
 
-    <!-- Robot Background Image -->
-    <img src="Transperent 3D.png" alt="EFS Robot" class="robot-bg floating hidden lg:block">
+    <!-- Robot Background Image - REDUCED OPACITY FURTHER -->
+    <img src="Transperent 3D.png" alt="EFS Robot" class="robot-bg floating hidden lg:block" style="opacity: 0.1;">
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
@@ -366,31 +389,31 @@
         <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050505] to-transparent z-20"></div>
     </section>
 
-    <!-- Services Section - ENHANCED VISIBILITY -->
-    <section id="services" class="relative py-32 z-20">
-        <!-- Background overlay to ensure contrast -->
-        <div class="absolute inset-0 bg-[#050505]/90 z-0"></div>
-        <div class="absolute inset-0 circuit-pattern opacity-50 z-0"></div>
+    <!-- Services Section - COMPLETELY FIXED -->
+    <section id="services" class="relative py-32" style="background: #0a0a0a; z-index: 10;">
+        <!-- Simple dark background instead of overlays -->
+        <div class="absolute inset-0 bg-[#0a0a0a] z-0"></div>
+        <div class="absolute inset-0 circuit-pattern opacity-20 z-0"></div>
 
-        <div class="container mx-auto px-6 relative z-10">
+        <div class="container mx-auto px-6 relative z-20">
             <div class="text-center mb-16" id="servicesHeader">
                 <h2 class="font-orbitron text-4xl md:text-5xl font-bold text-white mb-4">
                     SERVICE <span class="text-green-400">MODULES</span>
                 </h2>
                 <div class="w-24 h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent mx-auto"></div>
-                <p class="mt-6 text-gray-400 max-w-2xl mx-auto text-lg">Comprehensive technological solutions tailored for modern enterprises and individuals</p>
+                <p class="mt-6 text-gray-300 max-w-2xl mx-auto text-lg">Comprehensive technological solutions tailored for modern enterprises and individuals</p>
             </div>
 
             <div class="service-grid grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Hardware & Networking -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
                         </svg>
                     </div>
                     <h3 class="font-orbitron text-lg font-bold text-white mb-3 group-hover:text-green-400 transition-colors">HARDWARE & NETWORKING</h3>
-                    <ul class="space-y-2 text-gray-400 text-sm">
+                    <ul class="space-y-2 text-gray-300 text-sm">
                         <li class="flex items-start space-x-2">
                             <span class="text-green-500 mt-1">›</span>
                             <span>Custom computer specifications</span>
@@ -415,14 +438,14 @@
                 </div>
 
                 <!-- Office Solutions -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
                     </div>
                     <h3 class="font-orbitron text-lg font-bold text-white mb-3 group-hover:text-green-400 transition-colors">OFFICE SOLUTIONS</h3>
-                    <ul class="space-y-2 text-gray-400 text-sm">
+                    <ul class="space-y-2 text-gray-300 text-sm">
                         <li class="flex items-start space-x-2">
                             <span class="text-green-500 mt-1">›</span>
                             <span>Database Management Systems</span>
@@ -447,14 +470,14 @@
                 </div>
 
                 <!-- Neighborhood Solutions -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </div>
                     <h3 class="font-orbitron text-lg font-bold text-white mb-3 group-hover:text-green-400 transition-colors">NEIGHBORHOOD SOLUTIONS</h3>
-                    <ul class="space-y-2 text-gray-400 text-sm">
+                    <ul class="space-y-2 text-gray-300 text-sm">
                         <li class="flex items-start space-x-2">
                             <span class="text-green-500 mt-1">›</span>
                             <span>Tertiary & school applications</span>
@@ -479,14 +502,14 @@
                 </div>
 
                 <!-- Power Backup -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card">
+                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844;">
                     <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
                         <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
                     </div>
                     <h3 class="font-orbitron text-lg font-bold text-white mb-3 group-hover:text-green-400 transition-colors">POWER BACKUP</h3>
-                    <ul class="space-y-2 text-gray-400 text-sm">
+                    <ul class="space-y-2 text-gray-300 text-sm">
                         <li class="flex items-start space-x-2">
                             <span class="text-green-500 mt-1">›</span>
                             <span>Household solutions</span>
