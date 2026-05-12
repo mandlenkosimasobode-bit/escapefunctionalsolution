@@ -44,7 +44,7 @@
             100% { transform: translate(50px, 50px); }
         }
 
-        /* Watermark Logo Background */
+        /* Watermark Logo Background - 60% opacity */
         .watermark-logo {
             position: fixed;
             top: 50%;
@@ -52,10 +52,10 @@
             transform: translate(-50%, -50%);
             width: 80%;
             max-width: 800px;
-            opacity: 0.04;
+            opacity: 0.6;
             pointer-events: none;
             z-index: 0;
-            filter: blur(2px);
+            filter: blur(1px);
         }
 
         .glass-card {
@@ -256,17 +256,30 @@
             display: block;
         }
         
-        /* Welcome message styling */
-        .welcome-message {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: rgba(0, 255, 136, 0.05);
-            border-radius: 2rem;
-            border: 1px dashed rgba(0, 255, 136, 0.3);
-            margin: 2rem 0;
+        /* Lock icon styling - NEON GREEN */
+        .lock-icon {
+            color: #00ff88;
+            filter: drop-shadow(0 0 5px #00ff88);
+            display: inline-block;
+            animation: lockGlow 2s ease-in-out infinite;
         }
         
-        /* Staggered header animations */
+        @keyframes lockGlow {
+            0%, 100% { filter: drop-shadow(0 0 2px #00ff88); }
+            50% { filter: drop-shadow(0 0 10px #00ff88); }
+        }
+        
+        /* Status message with lock */
+        .status-lock {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 8px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
         .stagger-item {
             opacity: 0;
             transform: translateY(20px);
@@ -286,6 +299,8 @@
     <div class="scanlines"></div>
     <div class="fixed inset-0 cyber-grid opacity-40 pointer-events-none z-0"></div>
     <div class="fixed inset-0 circuit-pattern opacity-30 pointer-events-none z-0"></div>
+    
+    <!-- Watermark Logo - 60% opacity -->
     <img src="Transperent 3D logo.png" alt="EFS Watermark" class="watermark-logo">
 
     <!-- Navigation -->
@@ -318,7 +333,7 @@
                     SERVICE <span class="text-green-400 neon-text">CARDS</span>
                 </h1>
                 <p class="text-gray-400 max-w-2xl mx-auto text-lg stagger-item" style="animation-delay: 0.3s">
-                     <span class="text-green-400 font-bold">Click the Transparent 3D Logo</span> below to make all cards <span class="text-green-400">POP OUT</span> 
+                    <span class="text-green-400 font-bold">Click the Transparent 3D Logo</span> below to make all cards <span class="text-green-400">POP OUT</span> 
                 </p>
             </div>
 
@@ -348,7 +363,15 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12" id="sectionHeader">
                 <div class="w-24 h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent mx-auto mb-6"></div>
-                <p class="text-gray-400 max-w-2xl mx-auto" id="cardsStatusMsg">🔒 Cards are HIDDEN — click the 3D logo above to reveal them with a POP animation 🔒</p>
+                <div id="cardsStatusMsg" class="status-lock mx-auto inline-flex">
+                    <svg class="lock-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <span class="text-gray-300">CARDS ARE LOCKED — Click the 3D logo above to unlock & pop</span>
+                    <svg class="lock-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
             </div>
 
             <!-- Cards Container - INITIALLY HIDDEN -->
@@ -422,8 +445,8 @@
 
         // Current order of cards
         let currentOrder = [...servicesData];
-        let cardsRevealed = false;  // Track if cards have been revealed
-        let cardsRendered = false;   // Track if cards DOM exists
+        let cardsRevealed = false;
+        let cardsRendered = false;
         
         // Function to render cards into DOM
         function renderCards(dataToRender) {
@@ -435,7 +458,6 @@
             dataToRender.forEach((service, index) => {
                 const card = document.createElement('div');
                 card.className = 'glass-card rounded-xl p-6 service-card';
-                // Initially hidden, will apply pop animation after reveal
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.1) translateY(60px)';
                 card.setAttribute('data-order', index);
@@ -466,13 +488,10 @@
         function applyPopAnimation() {
             const cards = document.querySelectorAll('#cardsGrid .glass-card');
             cards.forEach((card, idx) => {
-                // Reset animation
                 card.style.animation = 'none';
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.1) translateY(60px)';
-                void card.offsetHeight; // Force reflow
-                
-                // Apply pop animation with delay
+                void card.offsetHeight;
                 const delaySec = idx * 0.1;
                 card.style.animation = `cardPopGreen 0.6s cubic-bezier(0.34, 1.2, 0.55, 1) forwards`;
                 card.style.animationDelay = `${delaySec}s`;
@@ -482,28 +501,32 @@
         // Function to reveal cards (first time)
         function revealCards() {
             if (!cardsRendered) {
-                // First time - render cards
                 renderCards(currentOrder);
             }
             
-            // Show the cards container
             const cardsContainer = document.getElementById('cardsContainer');
             cardsContainer.classList.remove('cards-hidden');
             cardsContainer.classList.add('cards-visible');
             
-            // Apply pop animation to all cards
             setTimeout(() => {
                 applyPopAnimation();
             }, 50);
             
-            // Update status message
+            // Update status message with UNLOCKED neon green lock
             const statusMsg = document.getElementById('cardsStatusMsg');
             if (statusMsg) {
-                statusMsg.innerHTML = '🎉 Cards REVEALED! Click logo again to RE-POP with animation 🎉';
-                statusMsg.classList.add('text-green-400');
+                statusMsg.innerHTML = `
+                    <svg class="lock-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-green-400">CARDS UNLOCKED! Click logo again to RE-POP</span>
+                    <svg class="lock-icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                    </svg>
+                `;
+                statusMsg.classList.add('border-green-500/50');
             }
             
-            // Add ripple effect to logo
             const logoImg = document.getElementById('transparent3DLogo');
             if (logoImg) {
                 logoImg.classList.add('logo-ripple');
@@ -513,10 +536,9 @@
             }
         }
         
-        // Function to RE-POP (when cards are already visible)
+        // Function to RE-POP
         function rePopCards() {
             if (!cardsRevealed && !cardsRendered) {
-                // First time - just reveal
                 cardsRevealed = true;
                 revealCards();
                 return;
@@ -528,10 +550,8 @@
                 return;
             }
             
-            // Just re-pop the existing cards (same order)
             applyPopAnimation();
             
-            // Add ripple to logo
             const logoImg = document.getElementById('transparent3DLogo');
             if (logoImg) {
                 logoImg.classList.add('logo-ripple');
@@ -550,7 +570,6 @@
                 rePopCards();
             }
             
-            // Flash effect on logo
             const logoImg = document.getElementById('transparent3DLogo');
             if (logoImg) {
                 logoImg.style.filter = 'drop-shadow(0 0 30px #00ff88) brightness(1.2)';
@@ -588,13 +607,10 @@
             }
         });
         
-        // PAGE LOAD POP ANIMATION - Hero elements already have stagger animation
-        // Adding extra glow to logo on load
+        // PAGE LOAD POP ANIMATION
         window.addEventListener('DOMContentLoaded', () => {
-            // Ensure all stagger items are visible after animation
-            console.log('Page loaded with POP animation — Cards are HIDDEN. Click logo to reveal them!');
+            console.log('Page loaded with POP animation — Cards are LOCKED. Click logo to unlock & pop!');
             
-            // Add a subtle initial pulse to the logo to draw attention
             const logo = document.getElementById('transparent3DLogo');
             if (logo) {
                 setTimeout(() => {
