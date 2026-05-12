@@ -44,25 +44,34 @@
             100% { transform: translate(50px, 50px); }
         }
 
-        /* Watermark Logo Background - 60% opacity */
+        /* Watermark Logo Background - positioned to be visible behind cards section too */
         .watermark-logo {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 80%;
-            max-width: 800px;
-            opacity: 0.6;
+            max-width: 900px;
+            opacity: 0.55;
             pointer-events: none;
-            z-index: 0;
-            filter: blur(1px);
+            z-index: 1;
+            filter: blur(1.5px);
+        }
+
+        /* Make sure cards section has higher z-index but watermark still visible behind */
+        .cards-section {
+            position: relative;
+            z-index: 5;
+            background: transparent;
         }
 
         .glass-card {
-            background: rgba(10, 10, 10, 0.95);
+            background: rgba(10, 10, 10, 0.92);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 255, 136, 0.4);
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 6;
         }
 
         .glass-card:hover {
@@ -199,7 +208,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            z-index: 10;
+            z-index: 20;
         }
         .logo-3d-container:hover {
             transform: scale(1.02);
@@ -246,6 +255,8 @@
         /* Cards container - initially hidden */
         .cards-wrapper {
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 5;
         }
         
         .cards-hidden {
@@ -273,11 +284,12 @@
         .status-lock {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(0, 255, 136, 0.1);
-            padding: 8px 20px;
-            border-radius: 40px;
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 10px 24px;
+            border-radius: 60px;
+            border: 1px solid rgba(0, 255, 136, 0.4);
         }
         
         .stagger-item {
@@ -292,6 +304,24 @@
                 transform: translateY(0);
             }
         }
+        
+        /* Hero section higher z-index */
+        .hero-section {
+            position: relative;
+            z-index: 15;
+        }
+        
+        /* Footer z-index */
+        footer {
+            position: relative;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        
+        /* Navigation higher z-index */
+        nav {
+            z-index: 100 !important;
+        }
     </style>
 </head>
 <body>
@@ -300,11 +330,11 @@
     <div class="fixed inset-0 cyber-grid opacity-40 pointer-events-none z-0"></div>
     <div class="fixed inset-0 circuit-pattern opacity-30 pointer-events-none z-0"></div>
     
-    <!-- Watermark Logo - 60% opacity -->
+    <!-- Watermark Logo - 55% opacity, visible behind everything including cards section -->
     <img src="Transperent 3D logo.png" alt="EFS Watermark" class="watermark-logo">
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+    <nav class="fixed w-full top-0 transition-all duration-300" id="navbar">
         <div class="absolute inset-0 bg-black/95 backdrop-blur-md border-b border-green-500/40"></div>
         <div class="container mx-auto px-6 py-4 relative z-10">
             <div class="flex justify-between items-center">
@@ -323,7 +353,7 @@
     </nav>
 
     <!-- Hero Section with Transparent 3D Logo (THE TRIGGER) -->
-    <section class="relative pt-32 pb-8 z-10">
+    <section class="relative pt-32 pb-8 hero-section">
         <div class="container mx-auto px-6">
             <div class="text-center mb-8">
                 <div class="inline-block px-4 py-2 border border-green-500/30 rounded-full bg-green-500/10 backdrop-blur-sm mb-6 stagger-item" style="animation-delay: 0.1s">
@@ -333,7 +363,7 @@
                     SERVICE <span class="text-green-400 neon-text">CARDS</span>
                 </h1>
                 <p class="text-gray-400 max-w-2xl mx-auto text-lg stagger-item" style="animation-delay: 0.3s">
-                    <span class="text-green-400 font-bold">Click the Transparent 3D Logo</span> below to make all cards <span class="text-green-400">POP OUT</span> 
+                    ⬇️ <span class="text-green-400 font-bold">Click the Transparent 3D Logo</span> below to make all cards <span class="text-green-400">POP OUT</span> ⬇️
                 </p>
             </div>
 
@@ -358,8 +388,8 @@
         </div>
     </section>
 
-    <!-- SERVICE CARDS SECTION — HIDDEN ON LOAD -->
-    <section class="relative pb-32 z-20" id="servicesCardsSection">
+    <!-- SERVICE CARDS SECTION — HIDDEN ON LOAD, WITH WATERMARK VISIBLE BEHIND -->
+    <section class="relative pb-32 cards-section" id="servicesCardsSection">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12" id="sectionHeader">
                 <div class="w-24 h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent mx-auto mb-6"></div>
@@ -387,7 +417,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-green-500/20 bg-black py-10 relative z-20">
+    <footer class="border-t border-green-500/20 bg-black/90 py-10">
         <div class="container mx-auto px-6 text-center">
             <p class="text-gray-500 text-sm font-mono">© 2026 ESCAPE FUNCTIONAL SOLUTIONS — HIDDEN CARDS | CLICK LOGO TO POP</p>
             <p class="text-green-500/50 text-xs mt-2">⟡ click the transparent 3D logo → cards appear with POP animation ⟡</p>
@@ -610,6 +640,7 @@
         // PAGE LOAD POP ANIMATION
         window.addEventListener('DOMContentLoaded', () => {
             console.log('Page loaded with POP animation — Cards are LOCKED. Click logo to unlock & pop!');
+            console.log('Watermark is visible behind the cards section at 55% opacity');
             
             const logo = document.getElementById('transparent3DLogo');
             if (logo) {
