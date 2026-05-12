@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>EFS | Service Modules — Popping from 3D Logo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #00ff88;
+            --dark-bg: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #000000;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Cyberpunk Grid Background */
+        .cyber-grid {
+            background-image: linear-gradient(rgba(0, 255, 136, 0.04) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Neon Glow */
+        .neon-text {
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* Scanline Effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, transparent 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00ff88;
+            border-radius: 4px;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Cyber Button */
+        .cyber-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.4), transparent);
+            transition: left 0.5s;
+        }
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        /* POPPING CARD ANIMATION — each card pops from the 3D logo */
+        .pop-card {
+            opacity: 0;
+            transform: scale(0.1) translateY(60px);
+            transform-origin: center bottom;
+            animation: cardPopGreen 0.6s cubic-bezier(0.34, 1.2, 0.55, 1) forwards;
+            animation-delay: calc(var(--order, 0) * 0.08s);
+        }
+
+        @keyframes cardPopGreen {
+            0% {
+                opacity: 0;
+                transform: scale(0.1) translateY(60px) rotateX(-20deg);
+                filter: blur(6px);
+            }
+            35% {
+                opacity: 0.9;
+                transform: scale(1.05) translateY(-10px);
+            }
+            70% {
+                transform: scale(0.98) translateY(3px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0px);
+                filter: blur(0);
+            }
+        }
+
+        /* Ripple effect on 3D logo when cards pop */
+        .logo-ripple {
+            animation: logoPulseGreen 0.6s ease-out;
+        }
+
+        @keyframes logoPulseGreen {
+            0% {
+                filter: drop-shadow(0 0 0 rgba(0, 255, 136, 0.8)) drop-shadow(0 0 0 rgba(0, 255, 136, 0.4));
+            }
+            100% {
+                filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0)) drop-shadow(0 0 40px rgba(0, 255, 136, 0));
+            }
+        }
+
+        /* 3D Logo styling */
+        .logo-3d-container {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logo-3d-container:hover {
+            transform: scale(1.02);
+        }
+        .logo-3d-img {
+            filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.4));
+            transition: filter 0.2s;
+        }
+
+        /* Service card internal styling */
+        .service-card {
+            min-height: 380px;
+        }
+        .service-card ul li {
+            color: #b0b0b0;
+        }
+
+        /* Icon pulse */
+        .icon-pulse {
+            animation: softPulse 2s infinite;
+        }
+        @keyframes softPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(0, 255, 136, 0); }
+        }
+
+        /* Circuit pattern overlay */
+        .circuit-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h40v40h-40z' fill='none' stroke='%2300ff88' stroke-width='0.5' opacity='0.08'/%3E%3C/svg%3E");
+        }
+
+        /* Glitch container for logo effect */
+        .glitch-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Scanline Overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Animated Grid Background -->
+    <div class="fixed inset-0 cyber-grid opacity-40 pointer-events-none z-0"></div>
+
+    <!-- Circuit Pattern Overlay -->
+    <div class="fixed inset-0 circuit-pattern opacity-30 pointer-events-none z-0"></div>
+
+    <!-- Navigation Bar (matching homepage theme) -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-md border-b border-green-500/40"></div>
+        <div class="container mx-auto px-6 py-4 relative z-10">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div>
+                        <h1 class="font-orbitron text-2xl font-bold text-white tracking-wider">EFS</h1>
+                        <p class="text-xs text-green-400 tracking-[0.3em] uppercase">Escape Functional Solutions</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-300 hover:text-green-400 transition-colors font-medium tracking-wide text-sm uppercase">Home</a>
+                    <a href="#" class="text-green-400 transition-colors font-medium tracking-wide text-sm uppercase border-b border-green-400 pb-1">Services</a>
+                    <a href="#" class="text-gray-300 hover:text-green-400 transition-colors font-medium tracking-wide text-sm uppercase">About</a>
+                    <a href="#" class="text-gray-300 hover:text-green-400 transition-colors font-medium tracking-wide text-sm uppercase">Contact</a>
+                </div>
+                <button class="md:hidden text-green-400" onclick="alert('Navigation menu')">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Transparent 3D Logo (the source of popping) -->
+    <section class="relative pt-32 pb-16 z-10">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-8">
+                <div class="inline-block px-4 py-2 border border-green-500/30 rounded-full bg-green-500/10 backdrop-blur-sm mb-6">
+                    <span class="text-green-400 text-sm font-mono tracking-widest">◉ INTERACTIVE MODULES</span>
+                </div>
+                <h1 class="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4">
+                    SERVICE <span class="text-green-400 neon-text">CARDS</span>
+                </h1>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">Click the <span class="text-green-400 font-bold">Transparent 3D Logo</span> below to see all service cards <span class="text-green-400">POP</span> into view</p>
+            </div>
+
+            <!-- CENTRAL TRANSPARENT 3D LOGO — THE POP SOURCE (replaces personal device) -->
+            <div class="flex justify-center mb-16">
+                <div class="relative group logo-3d-container" id="logoContainer">
+                    <div class="absolute -inset-6 bg-green-500/20 rounded-full blur-2xl opacity-50 group-hover:opacity-80 transition-all"></div>
+                    <div class="relative bg-gradient-to-b from-gray-900/50 to-black rounded-2xl p-6 border-2 border-green-500 shadow-2xl shadow-green-500/30 backdrop-blur-sm" style="transform-style: preserve-3d;">
+                        <!-- Transparent 3D Logo Image (using a high-tech 3D logo SVG that looks transparent and futuristic) -->
+                        <img id="transparent3DLogo" 
+                             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2300ff88' stop-opacity='0.9'/%3E%3Cstop offset='100%25' stop-color='%2300cc66' stop-opacity='0.6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='400' fill='none'/%3E%3Cg transform='translate(200,200)'%3E%3Cpolygon points='0,-120 104,-60 104,60 0,120 -104,60 -104,-60' fill='url(%23grad)' stroke='%2300ff88' stroke-width='2' opacity='0.9'/%3E%3Cpolygon points='0,-120 104,-60 0,0 -104,-60' fill='%2300ff8822' stroke='%2300ff88' stroke-width='1.5' opacity='0.7'/%3E%3Cpolygon points='104,-60 104,60 0,0' fill='%2300ff8833' stroke='%2300ff88' stroke-width='1.5' opacity='0.7'/%3E%3Cpolygon points='-104,-60 0,0 -104,60' fill='%2300ff8811' stroke='%2300ff88' stroke-width='1.5' opacity='0.6'/%3E%3Ccircle cx='0' cy='0' r='25' fill='%2300ff88' opacity='0.9'/%3E%3Ctext x='0' y='5' fill='black' font-size='12' font-weight='bold' text-anchor='middle' font-family='monospace'%3EEFS%3C/text%3E%3C/g%3E%3C/svg%3E"
+                             alt="Transparent 3D Logo - EFS Core"
+                             class="w-72 md:w-96 logo-3d-img floating"
+                             style="cursor: pointer; filter: drop-shadow(0 0 20px rgba(0,255,136,0.5));">
+                    </div>
+                    <div class="text-center mt-6">
+                        <span class="text-green-400 text-sm font-mono bg-black/60 px-5 py-2 rounded-full border border-green-500/50">⟡ TRANSPARENT 3D LOGO — click to re-pop all cards ⟡</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICE CARDS SECTION — 8 cards popping from 3D logo -->
+    <section class="relative pb-32 z-20" id="servicesCardsSection">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent mx-auto mb-6"></div>
+                <p class="text-gray-400 max-w-2xl mx-auto">Comprehensive technological solutions — each card pops from the <span class="text-green-400">Transparent 3D Logo</span></p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="cardsGrid">
+                <!-- Card 1: HARDWARE & NETWORKING -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:1">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3 group-hover:text-green-400 transition-colors">HARDWARE & NETWORKING</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Custom computer specifications</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Hardware upgrades & repairs</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>LAN installation & configuration</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Computer lab setup</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>OS & software installation</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: OFFICE SOLUTIONS -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:2">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3">OFFICE SOLUTIONS</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Database Management Systems</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Data backup & modeling</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Brand styling & certificates</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Custom poster designs</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Data visualization</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 3: NEIGHBORHOOD SOLUTIONS -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:3">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3">NEIGHBORHOOD SOLUTIONS</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Tertiary & school applications</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Business applications</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Image retouching & editing</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Video editing services</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Custom event invitations</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 4: POWER BACKUP -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:4">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3">POWER BACKUP</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Household & office setups</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Battery Management Systems</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Surge protection</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Fuse box installations</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Inverter solutions</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 5: DATA SOLUTIONS -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:5">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7h8M8 11h8M8 15h4" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3">DATA SOLUTIONS</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Data backup & recovery</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Data modeling & visualization</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Database optimization</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Cloud integration</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 6: CYBER SECURITY -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:6">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3">CYBER SECURITY</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Network security audits</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Threat detection</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Data encryption</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Security protocols</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 7: CLOUD INFRASTRUCTURE -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:7">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3">CLOUD INFRASTRUCTURE</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Cloud migration</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Hybrid cloud setups</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>SaaS integration</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Scalable storage</span></li>
+                    </ul>
+                </div>
+
+                <!-- Card 8: IT CONSULTING -->
+                <div class="pop-card glass-card rounded-xl p-6 service-card" style="--order:8">
+                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-5 icon-pulse border border-green-500/30">
+                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-xl font-bold text-white mb-3">IT CONSULTING</h3>
+                    <ul class="space-y-2 text-gray-300 text-sm">
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Strategic IT planning</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Infrastructure assessment</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Digital transformation</span></li>
+                        <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Tech stack optimization</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Re-pop Button -->
+            <div class="text-center mt-12">
+                <button id="repopAllBtn" class="cyber-btn bg-green-500 text-black font-bold py-3 px-8 rounded font-orbitron tracking-wider hover:bg-green-400 transition-colors">
+                    ⟳ RE-POP ALL CARDS
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-green-500/20 bg-black py-10 relative z-20">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-500 text-sm font-mono">© 2026 ESCAPE FUNCTIONAL SOLUTIONS — SERVICE MODULES</p>
+            <p class="text-green-500/50 text-xs mt-2">⟡ click the transparent 3D logo → cards pop from the logo ⟡</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get elements
+        const logoImg = document.getElementById('transparent3DLogo');
+        const logoContainer = document.getElementById('logoContainer');
+        const repopBtn = document.getElementById('repopAllBtn');
+        const allCards = document.querySelectorAll('.pop-card');
+
+        // Function to re-pop all cards from the 3D logo
+        function rePopAllCards() {
+            allCards.forEach(card => {
+                // Get the order value
+                let orderVal = parseInt(card.style.getPropertyValue('--order'), 10);
+                if (isNaN(orderVal)) {
+                    const idx = Array.from(allCards).indexOf(card);
+                    orderVal = idx + 1;
+                    card.style.setProperty('--order', orderVal);
+                }
+                const delaySec = (orderVal - 1) * 0.08;
+                
+                // Reset animation
+                card.style.animation = 'none';
+                // Force reflow
+                void card.offsetHeight;
+                card.style.animation = `cardPopGreen 0.6s cubic-bezier(0.34, 1.2, 0.55, 1) forwards`;
+                card.style.animationDelay = `${delaySec}s`;
+            });
+
+            // Add ripple effect to the 3D logo image
+            if (logoImg) {
+                logoImg.classList.remove('logo-ripple');
+                void logoImg.offsetWidth;
+                logoImg.classList.add('logo-ripple');
+                logoImg.addEventListener('animationend', () => {
+                    logoImg.classList.remove('logo-ripple');
+                }, { once: true });
+            }
+
+            // Add a pulse to the logo container
+            if (logoContainer) {
+                logoContainer.style.transform = 'scale(0.97)';
+                setTimeout(() => {
+                    if (logoContainer) logoContainer.style.transform = '';
+                }, 200);
+            }
+
+            // Flash the section border
+            const section = document.getElementById('servicesCardsSection');
+            if (section) {
+                section.style.transition = 'box-shadow 0.2s';
+                section.style.boxShadow = '0 0 40px rgba(0, 255, 136, 0.3)';
+                setTimeout(() => {
+                    if (section) section.style.boxShadow = '';
+                }, 500);
+            }
+
+            // Brief neon flash on logo glow
+            if (logoContainer) {
+                const glowDiv = logoContainer.querySelector('.absolute');
+                if (glowDiv) {
+                    glowDiv.style.opacity = '1';
+                    setTimeout(() => {
+                        if (glowDiv) glowDiv.style.opacity = '';
+                    }, 300);
+                }
+            }
+        }
+
+        // Click on 3D logo triggers pop
+        if (logoImg) {
+            logoImg.addEventListener('click', (e) => {
+                e.stopPropagation();
+                rePopAllCards();
+                // brightness flash effect
+                logoImg.style.filter = 'drop-shadow(0 0 30px #00ff88) brightness(1.2)';
+                setTimeout(() => {
+                    if (logoImg) logoImg.style.filter = 'drop-shadow(0 0 20px rgba(0,255,136,0.5))';
+                }, 200);
+            });
+        }
+
+        // Also make container clickable
+        if (logoContainer) {
+            logoContainer.addEventListener('click', (e) => {
+                if (e.target === logoImg) return;
+                rePopAllCards();
+            });
+        }
+
+        // Repop button handler
+        if (repopBtn) {
+            repopBtn.addEventListener('click', () => {
+                rePopAllCards();
+            });
+        }
+
+        // Initialize cards on load
+        window.addEventListener('DOMContentLoaded', () => {
+            allCards.forEach((card, idx) => {
+                if (!card.style.getPropertyValue('--order') || card.style.getPropertyValue('--order') === '') {
+                    card.style.setProperty('--order', idx + 1);
+                }
+                const order = parseInt(getComputedStyle(card).getPropertyValue('--order'), 10);
+                const delay = ((order || idx + 1) - 1) * 0.08;
+                card.style.animation = `cardPopGreen 0.6s cubic-bezier(0.34, 1.2, 0.55, 1) forwards`;
+                card.style.animationDelay = `${delay}s`;
+            });
+
+            // Initial ripple effect on 3D logo after load
+            setTimeout(() => {
+                if (logoImg) {
+                    logoImg.classList.add('logo-ripple');
+                    logoImg.addEventListener('animationend', () => {
+                        logoImg.classList.remove('logo-ripple');
+                    }, { once: true });
+                }
+            }, 500);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.pageYOffset > 50) {
+                navbar.classList.add('shadow-lg', 'shadow-green-500/10');
+            } else {
+                navbar.classList.remove('shadow-lg', 'shadow-green-500/10');
+            }
+        });
+
+        // Hover effect for cards
+        allCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
