@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>EFS | Hidden Cards — Pop on Logo Click</title>
+    <title>EFS | Service Modules — Click Logo to Pop Cards</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +31,7 @@
             font-family: 'Orbitron', sans-serif;
         }
 
+        /* Cyberpunk Grid Background */
         .cyber-grid {
             background-image: linear-gradient(rgba(0, 255, 136, 0.04) 1px, transparent 1px), 
                               linear-gradient(90deg, rgba(0, 255, 136, 0.04) 1px, transparent 1px);
@@ -139,7 +140,51 @@
             }
         }
 
-        /* Ripple effect on logo */
+        /* PAGE LOAD POP ANIMATION for Hero elements */
+        .pop-on-load {
+            opacity: 0;
+            transform: scale(0.8) translateY(30px);
+            animation: pageLoadPop 0.7s cubic-bezier(0.34, 1.2, 0.55, 1) forwards;
+        }
+
+        @keyframes pageLoadPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+                filter: blur(4px);
+            }
+            40% {
+                transform: scale(1.03) translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0px);
+                filter: blur(0);
+            }
+        }
+
+        /* Logo pop animation on load */
+        .logo-pop {
+            animation: logoLoadPop 0.8s cubic-bezier(0.34, 1.2, 0.55, 1) forwards;
+        }
+
+        @keyframes logoLoadPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-10deg);
+                filter: blur(8px);
+            }
+            50% {
+                transform: scale(1.08) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+                filter: blur(0);
+            }
+        }
+
+        /* Ripple effect on logo when cards pop */
         .logo-ripple {
             animation: logoPulseGreen 0.6s ease-out;
         }
@@ -203,24 +248,12 @@
             transition: all 0.3s ease;
         }
         
-        /* Hidden state for cards container */
         .cards-hidden {
             display: none;
         }
         
-        /* Visible state */
         .cards-visible {
             display: block;
-        }
-        
-        /* Shuffle animation */
-        .card-shuffle {
-            animation: shufflePulse 0.3s ease-in-out;
-        }
-        @keyframes shufflePulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.98); background: rgba(0,255,136,0.1); }
-            100% { transform: scale(1); }
         }
         
         /* Welcome message styling */
@@ -233,8 +266,18 @@
             margin: 2rem 0;
         }
         
-        .welcome-message svg {
-            margin-bottom: 1rem;
+        /* Staggered header animations */
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -268,16 +311,18 @@
     <section class="relative pt-32 pb-8 z-10">
         <div class="container mx-auto px-6">
             <div class="text-center mb-8">
-                <div class="inline-block px-4 py-2 border border-green-500/30 rounded-full bg-green-500/10 backdrop-blur-sm mb-6">
+                <div class="inline-block px-4 py-2 border border-green-500/30 rounded-full bg-green-500/10 backdrop-blur-sm mb-6 stagger-item" style="animation-delay: 0.1s">
                     <span class="text-green-400 text-sm font-mono tracking-widest">◉ CLICK TO REVEAL</span>
                 </div>
-                <h1 class="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4">
+                <h1 class="font-orbitron text-4xl md:text-6xl font-bold text-white mb-4 stagger-item" style="animation-delay: 0.2s">
                     SERVICE <span class="text-green-400 neon-text">CARDS</span>
                 </h1>
-                <p class="text-gray-400 max-w-2xl mx-auto text-lg"><span class="text-green-400 font-bold">Click the Transparent 3D Logo</span> below to make all cards <span class="text-green-400">POP OUT</span></p>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg stagger-item" style="animation-delay: 0.3s">
+                    ⬇️ <span class="text-green-400 font-bold">Click the Transparent 3D Logo</span> below to make all cards <span class="text-green-400">POP OUT</span> ⬇️
+                </p>
             </div>
 
-            <!-- CENTRAL TRANSPARENT 3D LOGO — THE ONLY TRIGGER -->
+            <!-- CENTRAL TRANSPARENT 3D LOGO — THE ONLY TRIGGER with POP animation on load -->
             <div class="flex justify-center mb-8">
                 <div class="relative group logo-3d-container" id="logoContainer">
                     <div class="glow-effect"></div>
@@ -285,11 +330,11 @@
                         <img id="transparent3DLogo" 
                              src="Transperent 3D logo.png"
                              alt="Click to reveal service cards"
-                             class="w-72 md:w-96 logo-3d-img floating"
+                             class="w-72 md:w-96 logo-3d-img logo-pop"
                              style="cursor: pointer;">
                     </div>
                     <div class="text-center mt-6">
-                        <span class="text-green-400 text-sm font-mono bg-black/60 px-5 py-2 rounded-full border border-green-500/50 animate-pulse">
+                        <span class="text-green-400 text-sm font-mono bg-black/60 px-5 py-2 rounded-full border border-green-500/50 animate-pulse stagger-item" style="animation-delay: 0.4s">
                             ⟡ CLICK HERE → CARDS WILL POP OUT ⟡
                         </span>
                     </div>
@@ -311,7 +356,7 @@
                 <div class="grid-container" id="cardsGrid"></div>
                 <div class="button-center">
                     <button id="repopAllBtn" class="cyber-btn bg-green-500 text-black font-bold py-3 px-8 rounded font-orbitron tracking-wider hover:bg-green-400 transition-colors">
-                        ⟳ SHUFFLE & RE-POP CARDS
+                        ⟳ RE-POP ALL CARDS
                     </button>
                 </div>
             </div>
@@ -327,95 +372,50 @@
     </footer>
 
     <script>
-        // ========== DYNAMIC DATA SOURCE ==========
+        // ========== YOUR EXACT CARD DATA (No extra cards added) ==========
         const servicesData = [
             {
                 id: 1,
                 icon: "M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z",
-                title: "Custom Computer Specifications",
+                title: "Custom computer specifications",
                 features: [
-                    "Machine custom built to client requirements",
+                    "Machine not made to be standard but custom",
                     "Relevant Operating System installed",
-                    "All driver updates completed",
-                    "Benchmark tests for performance evaluation"
+                    "All drive updates done on configure items",
+                    "Bench mark(s) done for build evaluation"
                 ]
             },
             {
                 id: 2,
                 icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-                title: "Hardware Upgrades & Repairs",
+                title: "Hardware upgrades & repairs",
                 features: [
-                    "Upgrades based on machine operations",
-                    "Customised to business workflow needs",
-                    "Parts replacement with latest specs",
-                    "Driver updates for every component"
+                    "Upgrades done according to machine operations",
+                    "Customisation done according to the needs of the business",
+                    "Parts replacements in respect to latest specifications",
+                    "Drive update for every part supplied"
                 ]
             },
             {
                 id: 3,
                 icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
-                title: "LAN & Computer Lab Setup",
+                title: "LAN installation & configuration and Computer lab setup",
                 features: [
                     "Patch Panel integration",
                     "Ethernet cables trunking",
-                    "Virtual Machine configurations",
-                    "PC client deployments",
+                    "Virtual Machine(s) configurations",
+                    "PC client(s) deployments",
                     "Distribution board installation"
                 ]
             },
             {
                 id: 4,
                 icon: "M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z M8 7h8M8 11h8M8 15h4",
-                title: "OS & Software Installation",
+                title: "Operating System & software installation",
                 features: [
-                    "Operating system installation & activation",
+                    "Operating system installation, activation, and drive updates",
                     "Firmware updates",
-                    "Application software integration",
-                    "Comprehensive driver updates"
-                ]
-            },
-            {
-                id: 5,
-                icon: "M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z",
-                title: "Data Backup Solutions",
-                features: [
-                    "Automated backup systems",
-                    "Cloud & local storage options",
-                    "Disaster recovery planning",
-                    "Data encryption & security"
-                ]
-            },
-            {
-                id: 6,
-                icon: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z",
-                title: "Cloud Infrastructure",
-                features: [
-                    "Cloud migration services",
-                    "Hybrid cloud setups",
-                    "SaaS integration",
-                    "Scalable storage solutions"
-                ]
-            },
-            {
-                id: 7,
-                icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z",
-                title: "Cyber Security",
-                features: [
-                    "Network security audits",
-                    "Threat detection systems",
-                    "Data encryption protocols",
-                    "24/7 security monitoring"
-                ]
-            },
-            {
-                id: 8,
-                icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-                title: "IT Consulting",
-                features: [
-                    "Strategic IT planning",
-                    "Infrastructure assessment",
-                    "Digital transformation",
-                    "Tech stack optimization"
+                    "Application software integration"
                 ]
             }
         ];
@@ -425,16 +425,6 @@
         let cardsRevealed = false;  // Track if cards have been revealed
         let cardsRendered = false;   // Track if cards DOM exists
         
-        // Function to shuffle array
-        function shuffleArray(arr) {
-            const shuffled = [...arr];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
-
         // Function to render cards into DOM
         function renderCards(dataToRender) {
             const grid = document.getElementById('cardsGrid');
@@ -445,7 +435,7 @@
             dataToRender.forEach((service, index) => {
                 const card = document.createElement('div');
                 card.className = 'glass-card rounded-xl p-6 service-card';
-                // Initially visible, will apply pop animation after reveal
+                // Initially hidden, will apply pop animation after reveal
                 card.style.opacity = '0';
                 card.style.transform = 'scale(0.1) translateY(60px)';
                 card.setAttribute('data-order', index);
@@ -483,7 +473,7 @@
                 void card.offsetHeight; // Force reflow
                 
                 // Apply pop animation with delay
-                const delaySec = idx * 0.08;
+                const delaySec = idx * 0.1;
                 card.style.animation = `cardPopGreen 0.6s cubic-bezier(0.34, 1.2, 0.55, 1) forwards`;
                 card.style.animationDelay = `${delaySec}s`;
             });
@@ -509,7 +499,7 @@
             // Update status message
             const statusMsg = document.getElementById('cardsStatusMsg');
             if (statusMsg) {
-                statusMsg.innerHTML = '🎉 Cards REVEALED! Click logo again to SHUFFLE & RE-POP 🎉';
+                statusMsg.innerHTML = '🎉 Cards REVEALED! Click logo again to RE-POP with animation 🎉';
                 statusMsg.classList.add('text-green-400');
             }
             
@@ -523,8 +513,8 @@
             }
         }
         
-        // Function to SHUFFLE and RE-POP (when cards are already visible)
-        function shuffleAndRepop() {
+        // Function to RE-POP (when cards are already visible)
+        function rePopCards() {
             if (!cardsRevealed && !cardsRendered) {
                 // First time - just reveal
                 cardsRevealed = true;
@@ -532,33 +522,23 @@
                 return;
             }
             
-            // Shuffle the data order
-            currentOrder = shuffleArray(currentOrder);
-            
-            // Add visual feedback
-            const grid = document.getElementById('cardsGrid');
-            if (grid) {
-                grid.style.opacity = '0.5';
-                grid.style.transition = 'opacity 0.2s';
+            if (!cardsRevealed) {
+                cardsRevealed = true;
+                revealCards();
+                return;
             }
             
-            // Re-render with new order
-            setTimeout(() => {
-                renderCards(currentOrder);
-                if (grid) grid.style.opacity = '1';
-                
-                // Apply fresh pop animation
-                applyPopAnimation();
-                
-                // Add ripple to logo
-                const logoImg = document.getElementById('transparent3DLogo');
-                if (logoImg) {
-                    logoImg.classList.add('logo-ripple');
-                    logoImg.addEventListener('animationend', () => {
-                        logoImg.classList.remove('logo-ripple');
-                    }, { once: true });
-                }
-            }, 150);
+            // Just re-pop the existing cards (same order)
+            applyPopAnimation();
+            
+            // Add ripple to logo
+            const logoImg = document.getElementById('transparent3DLogo');
+            if (logoImg) {
+                logoImg.classList.add('logo-ripple');
+                logoImg.addEventListener('animationend', () => {
+                    logoImg.classList.remove('logo-ripple');
+                }, { once: true });
+            }
         }
 
         // MAIN TRIGGER: Click on 3D Logo
@@ -567,7 +547,7 @@
                 cardsRevealed = true;
                 revealCards();
             } else {
-                shuffleAndRepop();
+                rePopCards();
             }
             
             // Flash effect on logo
@@ -591,7 +571,7 @@
         if (repopBtn) {
             repopBtn.addEventListener('click', () => {
                 if (cardsRevealed) {
-                    shuffleAndRepop();
+                    rePopCards();
                 } else {
                     revealCards();
                 }
@@ -608,8 +588,23 @@
             }
         });
         
-        // Small console log to confirm
-        console.log('Ready — Cards are HIDDEN. Click the transparent 3D logo to make them POP!');
+        // PAGE LOAD POP ANIMATION - Hero elements already have stagger animation
+        // Adding extra glow to logo on load
+        window.addEventListener('DOMContentLoaded', () => {
+            // Ensure all stagger items are visible after animation
+            console.log('Page loaded with POP animation — Cards are HIDDEN. Click logo to reveal them!');
+            
+            // Add a subtle initial pulse to the logo to draw attention
+            const logo = document.getElementById('transparent3DLogo');
+            if (logo) {
+                setTimeout(() => {
+                    logo.style.filter = 'drop-shadow(0 0 25px #00ff88) brightness(1.1)';
+                    setTimeout(() => {
+                        if (logo) logo.style.filter = 'drop-shadow(0 0 15px rgba(0,255,136,0.4))';
+                    }, 400);
+                }, 800);
+            }
+        });
     </script>
 </body>
 </html>
