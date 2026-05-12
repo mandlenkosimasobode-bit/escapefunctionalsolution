@@ -452,36 +452,30 @@
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" style="display: grid !important; visibility: visible !important; opacity: 1 !important;">
                 <!-- Hardware & Networking -->
-                <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844; display: block !important;">
-                    <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse group-hover:scale-110 transition-transform border border-green-500/30">
-                        <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                        </svg>
-                    </div>
-                    <h3 class="font-orbitron text-lg font-bold text-white mb-3 group-hover:text-green-400 transition-colors">HARDWARE & NETWORKING</h3>
-                    <ul class="space-y-2 text-gray-300 text-sm">
-                        <li class="flex items-start space-x-2">
-                            <span class="text-green-500 mt-1">›</span>
-                            <span>Custom computer specifications</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <span class="text-green-500 mt-1">›</span>
-                            <span>Hardware upgrades & repairs</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <span class="text-green-500 mt-1">›</span>
-                            <span>OS & software installation</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <span class="text-green-500 mt-1">›</span>
-                            <span>LAN installation & configuration</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <span class="text-green-500 mt-1">›</span>
-                            <span>Computer lab setup</span>
-                        </li>
-                    </ul>
-                </div>
+<!-- Replace the entire card grid section -->
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- HARDWARE & NETWORKING - Clickable to services page -->
+    <a href="Hardware&networking.html" class="block transition-transform hover:scale-105">
+        <div class="glass-card rounded-lg p-6 group cursor-pointer service-card h-full">
+            <!-- keep all existing content -->
+            <div class="w-14 h-14 bg-green-500/20 rounded-lg flex items-center justify-center mb-4 icon-pulse">
+                <svg class="w-7 h-7 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+            </div>
+            <h3 class="font-orbitron text-lg font-bold text-white mb-3 group-hover:text-green-400">HARDWARE & NETWORKING</h3>
+            <ul class="space-y-2 text-gray-300 text-sm">
+                <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Custom computer specifications</span></li>
+                <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Hardware upgrades & repairs</span></li>
+                <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>OS & software installation</span></li>
+                <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>LAN installation & configuration</span></li>
+                <li class="flex items-start space-x-2"><span class="text-green-500 mt-1">›</span><span>Computer lab setup</span></li>
+            </ul>
+        </div>
+    </a>
+    
+    <!-- Other cards (Office, Neighborhood, Power Backup) remain as is -->
+</div>
 
                 <!-- Office Solutions -->
                 <div class="glass-card rounded-lg p-6 group cursor-pointer service-card" style="background: #111; border: 1px solid #00ff8844; display: block !important;">
@@ -813,5 +807,20 @@
                 this.style.transform = 'translateY(0) scale(1)';
             });
         });
+        <script>
+    // Make Hardware & Networking card clickable to services page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select all service cards
+        const cards = document.querySelectorAll('.service-card');
+        
+        if (cards.length > 0) {
+            // First card is Hardware & Networking
+            cards[0].style.cursor = 'pointer';
+            cards[0].addEventListener('click', function() {
+                window.location.href = 'services.html';
+            });
+        }
+    });
+</script>
     </script>
 </body>
